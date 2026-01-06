@@ -15,7 +15,13 @@ class Product extends Model
         'deskripsi',
         'stok',
         'image',
+        'category_id',
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 
     protected $casts = [
         'harga' => 'decimal:2',

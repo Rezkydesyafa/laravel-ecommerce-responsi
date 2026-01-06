@@ -59,6 +59,12 @@ class ProductResource extends Resource
                             ->numeric()
                             ->default(0)
                             ->minValue(0),
+
+                        \Filament\Forms\Components\Select::make('category_id')
+                            ->label('Kategori')
+                            ->relationship('category', 'name')
+                            ->searchable()
+                            ->required(),
                     ])
                     ->columns(2),
 
@@ -88,6 +94,10 @@ class ProductResource extends Resource
                 TextColumn::make('nama')
                     ->label('Nama Produk')
                     ->searchable()
+                    ->sortable(),
+
+                TextColumn::make('category.name')
+                    ->label('Kategori')
                     ->sortable(),
 
                 TextColumn::make('harga')
