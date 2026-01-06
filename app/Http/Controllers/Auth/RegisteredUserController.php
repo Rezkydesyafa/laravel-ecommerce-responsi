@@ -39,12 +39,14 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => 'customer', // Default role untuk registrasi
         ]);
 
         event(new Registered($user));
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        // Customer diarahkan ke halaman toko
+        return redirect(route('shop.index', absolute: false));
     }
 }
