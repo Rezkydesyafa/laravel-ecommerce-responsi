@@ -35,8 +35,8 @@ class AuthenticatedSessionController extends Controller
             return redirect()->intended('/admin');
         }
         
-        // Customer diarahkan ke halaman toko
-        return redirect()->intended(route('shop.index', absolute: false));
+        // Customer diarahkan ke halaman home
+        return redirect()->intended('/');
     }
 
     /**

@@ -61,12 +61,8 @@ class GoogleController extends Controller
                 }
             }
 
-            // Redirect based on role
-            if ($user->isAdmin()) {
-                return redirect()->intended('/admin');
-            }
-
-            return redirect()->intended(route('shop.index', absolute: false));
+            // Google login selalu diarahkan ke home
+            return redirect()->intended('/');
 
         } catch (\Exception $e) {
             return redirect()->route('login')->with('error', 'Gagal login dengan Google, silakan coba lagi.');
