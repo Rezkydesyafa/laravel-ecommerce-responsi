@@ -1,11 +1,16 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ShopController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+// Shop routes (Customer)
+Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
+Route::get('/shop/product/{product}', [ShopController::class, 'show'])->name('shop.show');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -18,3 +23,4 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
