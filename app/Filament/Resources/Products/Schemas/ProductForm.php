@@ -55,7 +55,9 @@ class ProductForm
                             ->schema([
                                 FileUpload::make('image')
                                     ->image()
+                                    ->disk('public')
                                     ->directory('products')
+                                    ->visibility('public')
                                     ->columnSpanFull(),
                             ]),
                     ]),

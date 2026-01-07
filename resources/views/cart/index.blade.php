@@ -148,9 +148,9 @@
                                 <span class="fw-bold fs-5" id="summary-total">Rp {{ number_format($total, 0, ',', '.') }}</span>
                             </div>
 
-                            <button class="btn btn-dark w-100 py-3 rounded-3 fw-bold shadow-sm">
+                            <a href="{{ route('checkout.index') }}" class="btn btn-dark w-100 py-3 rounded-3 fw-bold shadow-sm">
                                 Checkout Now
-                            </button>
+                            </a>
 
                             <p class="text-center text-muted small mt-3 mb-0">
                                 <i class="bi bi-shield-lock me-1"></i> Secure Checkout
