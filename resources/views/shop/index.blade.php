@@ -1,258 +1,206 @@
 <x-shop-layout>
+    @php
+        function getCategoryIcon($name) {
+            $name = strtolower($name ?? '');
+            if (str_contains($name, 'elec') || str_contains($name, 'gadget') || str_contains($name, 'hp') || str_contains($name, 'laptop')) return 'bi-laptop';
+            if (str_contains($name, 'fash') || str_contains($name, 'cloth') || str_contains($name, 'baju') || str_contains($name, 'pakaian')) return 'bi-bag';
+            if (str_contains($name, 'shoe') || str_contains($name, 'foot') || str_contains($name, 'sepatu')) return 'bi-box-seam';
+            if (str_contains($name, 'watch') || str_contains($name, 'clock') || str_contains($name, 'jam')) return 'bi-watch';
+            if (str_contains($name, 'home') || str_contains($name, 'furn') || str_contains($name, 'rumah')) return 'bi-house';
+            if (str_contains($name, 'sport') || str_contains($name, 'gym') || str_contains($name, 'olahraga')) return 'bi-activity';
+            if (str_contains($name, 'beauty') || str_contains($name, 'care') || str_contains($name, 'kosmetik')) return 'bi-heart';
+            return 'bi-tag';
+        }
+    @endphp
+
     <style>
+        /* Hero Refinement */
         .hero-section {
-            height: 550px;
+            height: 50vh;
+            min-height: 400px;
             background-size: cover;
             background-position: center;
-            border-radius: 1rem;
+            border-radius: 20px;
             position: relative;
             overflow: hidden;
+            margin-bottom: 3rem;
         }
-        .hero-overlay {
-            background: linear-gradient(to right, rgba(0,0,0,0.6), transparent);
+        .hero-content {
             position: absolute;
-            inset: 0;
-        }
-        .clean-card {
-            border: none;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-        }
-        .clean-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-        }
-        .category-height {
-            height: 280px;
-            background-size: cover;
-            background-position: center;
-            position: relative;
-            border-radius: 12px;
-            overflow: hidden;
-        }
-        .category-overlay {
-            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: flex-end;
-            padding: 20px;
-            transition: background 0.3s;
-        }
-        .category-height:hover .category-overlay {
-            background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.1));
-        }
-        
-        .product-img-container {
-            position: relative;
-            padding-top: 133%; /* 4:3 Aspect Ratio */
-            background-color: #f8f9fa;
-            border-radius: 12px;
-            overflow: hidden;
-            margin-bottom: 12px;
-        }
-        .product-img {
-            position: absolute;
-            top: 0;
+            bottom: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
+            right: 0;
+            padding: 3rem;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: white;
         }
-        .clean-card:hover .product-img {
-            transform: scale(1.05);
-        }
-        .action-btn {
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
+
+        /* Category Card */
+        .cat-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem 1rem;
             background: white;
+            border: 1px solid #f0f0f0;
+            border-radius: 16px;
+            text-decoration: none;
+            color: #1a1a1a;
+            transition: all 0.2s ease;
+            height: 100%;
+        }
+        .cat-card:hover {
+            transform: translateY(-5px);
+            border-color: #1a1a1a;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            background: #fff;
+        }
+        .cat-icon {
+            width: 55px;
+            height: 55px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background: #f8f9fa;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            color: #1a1a1a;
             transition: all 0.2s;
-            color: #333;
-            border: none;
+            overflow: hidden; /* For image */
+            margin-bottom: 0.75rem;
         }
-        .action-btn:hover {
-            background: #101922;
+        .cat-card:hover .cat-icon {
+            background: #1a1a1a;
             color: white;
         }
-        .product-overlay {
+        /* Keep image separate so it doesn't change color */
+        .cat-card:hover .cat-icon img {
+             /* No filter needed, just nice image */
+        }
+
+        /* Product Card Simple */
+        .product-card {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            height: 100%;
+        }
+        .product-img-wrapper {
+            border-radius: 12px;
+            overflow: hidden;
+            background: #f4f4f4;
+            aspect-ratio: 1/1;
+            position: relative;
+            margin-bottom: 1rem;
+        }
+        .product-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .product-card:hover .product-img {
+            transform: scale(1.05);
+        }
+        .card-badge {
             position: absolute;
             top: 10px;
-            right: 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            opacity: 0;
-            transform: translateX(10px);
-            transition: all 0.3s ease;
-        }
-        .clean-card:hover .product-overlay {
-            opacity: 1;
-            transform: translateX(0);
-        }
-        /* Buttons */
-        .btn-dark-custom {
-            background-color: #101922;
-            border-color: #101922;
-            color: white;
-            padding: 12px 30px;
-            border-radius: 50px;
-            font-weight: 500;
-            transition: all 0.3s;
-        }
-        .btn-dark-custom:hover {
-            background-color: #2c3e50;
-            border-color: #2c3e50;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            left: 10px;
+            background: white;
+            color: black;
+            font-weight: 700;
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            z-index: 2;
         }
     </style>
 
-    <div class="container-xl px-4 px-lg-5 py-4">
-        
-        <!-- Hero Section -->
-        <section class="mb-5">
-            <div class="hero-section shadow-sm" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAZrFtRpXHV87_QKA2V_Vcc8DAOh6WTLZer4WxQCHSX9Ir-lPbgQSYntEC6Zgmd78ga5IRne5uKesayySr_Pq48WML6ak9TudgJAqUz81VBj3XNAjzVJRfxXvSI4YDvOE1rYH0NSa_I2RHa_CoAYPtK-TJjbULI1TiBVeO7KRsThzATMGHc2arJrRQWbiub_C1YS56Mv8Mf0FJ5i9SmmWIp9Gt-xVjXgpj7Xss2MU6bf2JnB5GrBgnrOpgR6021OUWjwA3PYDXtwh5Y');">
-                <div class="hero-overlay"></div>
-                <div class="position-relative h-100 d-flex align-items-center px-4 md:px-5" style="z-index: 10; padding-left: 3rem;">
-                    <div class="text-white" style="max-width: 550px;">
-                        <span class="text-uppercase fw-bold letter-spacing-2 small mb-2 d-block opacity-75">New Collection 2024</span>
-                        <h1 class="display-4 fw-bold mb-3">Elevate Your Style</h1>
-                        <p class="lead mb-4 opacity-90 fw-light">Discover curated pieces that blend modern aesthetics with timeless comfort.</p>
-                        <a href="#products" class="btn btn-light rounded-pill px-5 py-2 fw-bold text-dark border-0 shadow-sm">Shop Now</a>
+    <div class="container py-4">
+        <!-- Hero -->
+        <div class="hero-section mb-5" style="background-image: url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=2070&auto=format&fit=crop');">
+            <div class="hero-content">
+                <span class="badge bg-white text-dark mb-2 px-3 py-1 rounded-pill fw-bold small">New Arrival</span>
+                <h1 class="display-4 fw-bold mb-2">Minimalist Collection</h1>
+                <p class="mb-0 opacity-75">Discover styles that blend luxury and comfort perfectly.</p>
+            </div>
+        </div>
+
+        <!-- Categories Section -->
+        @if(isset($categories) && $categories->count() > 0)
+        <div class="mb-5">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <h4 class="fw-bold mb-0">Browse Categories</h4>
+                <a href="#" class="text-decoration-none text-muted small fw-bold">View All <i class="bi bi-arrow-right ms-1"></i></a>
+            </div>
+            
+            <div class="row row-cols-2 row-cols-md-3 row-cols-lg-6 g-3">
+                @foreach($categories as $category)
+                    <div class="col">
+                        <a href="#" class="cat-card h-100">
+                            <div class="cat-icon">
+                                @if($category->image && Storage::exists('public/'.$category->image))
+                                     <img src="{{ Storage::url($category->image) }}" class="w-100 h-100 object-fit-cover" alt="{{ $category->name }}">
+                                @elseif($category->image)
+                                     {{-- Try without checking storage existence if path is full url --}}
+                                     <img src="{{ Storage::url($category->image) }}" class="w-100 h-100 object-fit-cover" alt="{{ $category->name }}">
+                                @else
+                                     <i class="{{ getCategoryIcon($category->name) }}"></i>
+                                @endif
+                            </div>
+                            <span class="fw-bold small text-center text-truncate w-100 px-1">{{ $category->name }}</span>
+                        </a>
                     </div>
-                </div>
+                @endforeach
             </div>
-        </section>
+        </div>
+        @endif
 
-        <!-- Categories -->
-        <section class="mb-5">
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <a href="#" class="d-block category-height shadow-sm group text-decoration-none">
-                        <div class="h-100 w-100" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAOLuc6IqTTMFvFknTlRxfuaafl-L5CnUaixsktPGUEEq8Gy9VJo4rXMFMundBKxgg76lvXjB8YUBR8CtjF5SsHVJtK-mCMDqskaxIc3ilAKQetSdy4jxtJkZRg_Gz1c8lNhYXmQdSk_N_WYh-wk-qSMD4dpVVdcNwWtBI1mI9FCRhi_3pFd7Ow6QU3CGtnDAq0g9b7fGpc4chJFBBP6DXWGvmURhoMP-wvaQqtAgpDfBkvVuq2EGdT7pqSTHwHRdWHjarF42vKn8aN'); background-size: cover; background-position: center; transition: transform 0.5s;"></div>
-                        <div class="category-overlay">
-                            <div class="w-100">
-                                <h4 class="text-white fw-bold mb-0">Electronics</h4>
-                                <span class="text-white-50 small text-uppercase fw-bold">Explore</span>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-md-4">
-                    <a href="#" class="d-block category-height shadow-sm group text-decoration-none">
-                        <div class="h-100 w-100" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAGnmXSpj8oMImy1UXh84Snv2Q1_kloB1X4qJP6dPuCejcM7mbByF3D1fv6xDxMsttGgG6NbESfPF2AWPX5k13W8LbuMbDSHmNgl8gBssrJXlSabPHbwauF45thQmn7-7SCSlHYEergwz_TzAVjrhjgP_-uWH7-G1JZLZ9I9ricjJRwQiQHMXQSmWrIQLV1yLseIiWbHcw79ge1TDLDBzJuWyaj1C2VAiTqnca56if-stb7jIBd-55KKsC8g1NiedkQ_KOR32KDznuD'); background-size: cover; background-position: center;"></div>
-                        <div class="category-overlay">
-                            <div class="w-100">
-                                <h4 class="text-white fw-bold mb-0">Fashion</h4>
-                                <span class="text-white-50 small text-uppercase fw-bold">Explore</span>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-md-4">
-                    <a href="#" class="d-block category-height shadow-sm group text-decoration-none">
-                        <div class="h-100 w-100" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDFbloSt1OFSnblWHAOZIQdvQSF9gwpk3LSu722Pd-VSza4TBiVNL78g7uA6YOs7qC6m6nNqaaCquSgniQcXctJ3CEklQV6am9gjovM1-0PldqVo1VdocB5kbrULbrjV857MOhw7sjbEigoXm66D2T-v3lwUnxJHyJ29PuRGznZd8N1CAx9b-ujxjiWLJNGYsJYbUVcOf_Gs4CxMqRwtFHVUxo3f9IMrUKye7yywlCxjdX2LvAMkE_XW-Xg2WR6m8C9qCVhZcSkcJrC'); background-size: cover; background-position: center;"></div>
-                        <div class="category-overlay">
-                            <div class="w-100">
-                                <h4 class="text-white fw-bold mb-0">Living</h4>
-                                <span class="text-white-50 small text-uppercase fw-bold">Explore</span>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Product Grid -->
-        <section id="products" class="mb-5">
-            <div class="d-flex justify-content-between align-items-end mb-4">
-                <div>
-                    <h2 class="fw-bold mb-0">Trending Now</h2>
-                    <p class="text-muted small mb-0">Handpicked items just for you.</p>
-                </div>
-                <a href="#" class="text-dark fw-bold small text-decoration-none border-bottom border-dark pb-1">View All</a>
+        <!-- Products Section -->
+        <div id="products">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <h4 class="fw-bold mb-0">Latest Arrivals</h4>
             </div>
 
-            <div class="row g-4">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
                 @if($products->count() > 0)
                     @foreach($products as $product)
-                        <div class="col-6 col-md-4 col-lg-3">
-                            <div class="clean-card h-100">
-                                <div class="product-img-container">
+                        <div class="col">
+                            <a href="{{ route('shop.show', $product) }}" class="product-card">
+                                <div class="product-img-wrapper">
+                                    <div class="card-badge">NEW</div>
                                     @if($product->image)
                                         <img src="{{ asset('storage/' . $product->image) }}" class="product-img" alt="{{ $product->nama }}">
                                     @else
-                                        <img src="https://placehold.co/400x500/f8f9fa/a0aec0?text=No+Image" class="product-img" alt="No Image">
-                                    @endif
-                                    
-                                    <div class="product-overlay">
-                                        <button class="action-btn" title="Add to Wishlist">
-                                            <span class="material-symbols-outlined fs-6">favorite</span>
-                                        </button>
-                                        <a href="{{ route('shop.show', $product) }}" class="action-btn text-decoration-none" title="View Details">
-                                            <span class="material-symbols-outlined fs-6">visibility</span>
-                                        </a>
-                                    </div>
-                                    
-                                    @if($product->stok <= 0)
-                                        <div class="position-absolute bottom-0 start-0 w-100 bg-white bg-opacity-75 text-center text-danger fw-bold small py-1">
-                                            SOLD OUT
+                                        <div class="d-flex w-100 h-100 align-items-center justify-content-center bg-light text-muted">
+                                            <i class="bi bi-image fs-1 opacity-25"></i>
                                         </div>
                                     @endif
                                 </div>
-                                <div class="p-3 pt-1">
-                                    <div class="d-flex justify-content-between align-items-start mb-1">
-                                        <h3 class="h6 fw-bold mb-0 text-truncate pe-2">
-                                            <a href="{{ route('shop.show', $product) }}" class="text-dark text-decoration-none">{{ $product->nama }}</a>
-                                        </h3>
-                                        <span class="badge bg-light text-dark border fw-normal small">New</span>
-                                    </div>
-                                    <p class="text-muted small mb-2 text-truncate">{{ $product->category ? $product->category->name : 'General' }}</p>
-                                    <div class="d-flex align-items-center justify-content-between">
-                                        <span class="fw-bold text-dark">Rp {{ number_format($product->harga, 0, ',', '.') }}</span>
-                                    </div>
+                                
+                                <div class="pb-2">
+                                    <div class="text-muted small fw-bold mb-1 text-uppercase">{{ $product->category->name ?? 'Collection' }}</div>
+                                    <h6 class="fw-bold text-dark mb-1 text-truncate">{{ $product->nama }}</h6>
+                                    <div class="fw-bold text-dark">Rp {{ number_format($product->harga, 0, ',', '.') }}</div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                     @endforeach
                 @else
-                    <div class="col-12 py-5 text-center">
-                        <div class="text-muted mb-3">
-                            <span class="material-symbols-outlined fs-1 opacity-25">inventory_2</span>
+                    <div class="col-12 text-center py-5">
+                        <div class="p-5 bg-light rounded-4">
+                            <i class="bi bi-box-seam fs-1 text-muted mb-3 d-block"></i>
+                            <h5 class="fw-bold">No products found</h5>
+                            <p class="text-muted">Stay tuned for our upcoming collections.</p>
                         </div>
-                        <h5 class="fw-normal text-muted">No products found yet.</h5>
                     </div>
                 @endif
             </div>
-            
-            <div class="text-center mt-5">
-                <button class="btn btn-outline-dark rounded-pill px-5 py-2 fw-bold text-uppercase" style="font-size: 0.8rem; letter-spacing: 1px;">Load More</button>
-            </div>
-        </section>
 
-        <!-- Newsletter -->
-        <section class="py-5">
-            <div class="bg-dark text-white rounded-4 p-5 text-center position-relative overflow-hidden">
-                <div class="position-relative z-1">
-                    <h2 class="fw-bold mb-2">Join the Club</h2>
-                    <p class="text-white-50 mb-4 fw-light">Get exclusive access to sales and new arrivals.</p>
-                    <form class="mx-auto" style="max-width: 400px;">
-                        <div class="input-group bg-white rounded-pill overflow-hidden p-1">
-                            <input type="email" class="form-control border-0 px-3 shadow-none" placeholder="Your email address">
-                            <button class="btn btn-dark rounded-pill px-4" type="button">Sign Up</button>
-                        </div>
-                    </form>
-                </div>
+            <div class="mt-5 d-flex justify-content-center">
+                {{ $products->links() }}
             </div>
-        </section>
-
+        </div>
     </div>
 </x-shop-layout>

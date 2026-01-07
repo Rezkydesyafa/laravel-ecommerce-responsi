@@ -5,7 +5,7 @@ namespace App\Filament\Resources\Categories\Tables;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Tables\Columns\ImageColumn;
+// use Filament\Tables\Columns\ImageColumn; // Removed
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -16,14 +16,11 @@ class CategoriesTable
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->searchable(),
-                TextColumn::make('slug')
-                    ->searchable(),
-                ImageColumn::make('image'),
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->sortable(),
                 TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()

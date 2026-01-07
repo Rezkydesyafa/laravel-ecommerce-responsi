@@ -17,4 +17,13 @@ class Category extends Model
     {
         return $this->hasMany(Product::class);
     }
+
+    protected static function booted()
+    {
+        static::saving(function ($category) {
+            if (empty($category->slug)) {
+                $category->slug = \Illuminate\Support\Str::slug($category->name);
+            }
+        });
+    }
 }
