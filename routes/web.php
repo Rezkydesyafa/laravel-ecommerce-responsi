@@ -19,10 +19,7 @@ Route::middleware('auth')->group(function () {
 
     // Cart Routes
     Route::resource('cart', App\Http\Controllers\CartController::class)->only(['index', 'store', 'update', 'destroy']);
-    
-    // Checkout Route
-    Route::get('/checkout', [App\Http\Controllers\CheckoutController::class, 'index'])->name('checkout.index');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__.'/auth.php';    
 

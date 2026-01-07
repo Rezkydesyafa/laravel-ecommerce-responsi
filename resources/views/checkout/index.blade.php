@@ -46,42 +46,40 @@
 
                 <!-- Right Column: Order Summary (Sticky) -->
                 <div class="col-lg-5">
-                    <div class="p-4 border rounded-4 h-100">
+                    <div class="p-4 bg-light rounded-4 h-100">
                         <h5 class="fw-bold mb-4">Order Summary</h5>
 
                         <div class="d-flex flex-column gap-3 mb-4">
                             @foreach($items as $item)
-                                <div class="d-flex align-items-center justify-content-between gap-3">
-                                    <div class="d-flex align-items-center gap-3">
-                                        <div class="position-relative">
-                                            <div class="bg-light rounded-3 d-flex align-items-center justify-content-center overflow-hidden border" style="width: 60px; height: 60px;">
-                                                @if($item->product->image)
-                                                    <img src="{{ Storage::url($item->product->image) }}" class="w-100 h-100 object-fit-cover" alt="{{ $item->product->nama }}">
-                                                @else
-                                                    <i class="bi bi-image text-muted"></i>
-                                                @endif
-                                            </div>
-                                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark text-white border border-white px-2" style="font-size: 0.65rem;">
-                                                {{ $item->quantity }}
-                                            </span>
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="position-relative">
+                                        <div class="bg-white rounded-3 shadow-sm d-flex align-items-center justify-content-center overflow-hidden" style="width: 64px; height: 64px;">
+                                            @if($item->product->image)
+                                                <img src="{{ Storage::url($item->product->image) }}" class="w-100 h-100 object-fit-cover" alt="{{ $item->product->nama }}">
+                                            @else
+                                                <i class="bi bi-image text-muted"></i>
+                                            @endif
                                         </div>
-                                        <div>
-                                            <h6 class="mb-0 fw-bold small text-truncate" style="max-width: 140px;">{{ $item->product->nama }}</h6>
-                                            <div class="text-muted" style="font-size: 0.8rem;">{{ $item->product->category->name ?? 'Product' }}</div>
-                                        </div>
+                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark text-white border border-white" style="font-size: 0.7rem;">
+                                            {{ $item->quantity }}
+                                        </span>
                                     </div>
-                                    <div class="fw-bold small text-end">
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-0 fw-semibold small">{{ $item->product->nama }}</h6>
+                                        <div class="text-muted small">{{ $item->product->category->name ?? 'Product' }}</div>
+                                    </div>
+                                    <div class="fw-semibold small">
                                         Rp {{ number_format($item->product->harga * $item->quantity, 0, ',', '.') }}
                                     </div>
                                 </div>
                             @endforeach
                         </div>
 
-                        <hr class="my-4 border-secondary opacity-10">
+                        <hr class="my-4 text-muted opacity-25">
 
                         <div class="d-flex justify-content-between mb-2 small text-muted">
                             <span>Subtotal</span>
-                            <span class="fw-medium text-dark">Rp {{ number_format($total, 0, ',', '.') }}</span>
+                            <span>Rp {{ number_format($total, 0, ',', '.') }}</span>
                         </div>
                         <div class="d-flex justify-content-between mb-4 small text-muted">
                             <span>Shipping</span>
