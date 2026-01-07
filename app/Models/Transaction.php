@@ -12,6 +12,10 @@ class Transaction extends Model
         'status',
         'snap_token',
         'payment_type',
+        'phone',
+        'address',
+        'city',
+        'postal_code',
     ];
 
     public function user()

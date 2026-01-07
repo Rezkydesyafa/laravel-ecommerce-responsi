@@ -22,8 +22,12 @@ Route::middleware('auth')->group(function () {
 
     // Checkout Routes
     Route::get('/checkout', [App\Http\Controllers\CheckoutController::class, 'index'])->name('checkout.index');
-    Route::post('/checkout', [App\Http\Controllers\CheckoutController::class, 'store'])->name('checkout.store');
+    Route::post('/checkout', [App\Http\Controllers\CheckoutController::class, 'process'])->name('checkout.process');
+    Route::post('/checkout/success', [App\Http\Controllers\CheckoutController::class, 'success'])->name('checkout.success');
+    Route::get('/payment/{transaction}', [App\Http\Controllers\CheckoutController::class, 'payment'])->name('checkout.payment');
 });
+
+Route::post('/midtrans/callback', [App\Http\Controllers\CheckoutController::class, 'callback'])->name('midtrans.callback');
 
 require __DIR__.'/auth.php';    
 
