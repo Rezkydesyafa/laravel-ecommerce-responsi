@@ -9,14 +9,15 @@
                         <h2 class="fw-bold m-0 tracking-tight">Checkout</h2>
                     </div>
 
-                    <form action="#" method="POST" id="checkout-form">
+                    <form action="{{ route('checkout.process') }}" method="POST" id="checkout-form">
+                        @csrf
                         <h6 class="fw-bold mb-3 ls-1 text-uppercase small">Contact Information</h6>
                         <div class="form-floating mb-3">
-                            <input type="email" class="form-control bg-light border-0 rounded-3" id="email" placeholder="Email" value="{{ $user->email }}">
+                            <input type="email" class="form-control bg-light border-0 rounded-3" id="email" value="{{ $user->email }}" disabled>
                             <label for="email" class="text-muted">Email Address</label>
                         </div>
                         <div class="form-floating mb-4">
-                            <input type="text" class="form-control bg-light border-0 rounded-3" id="phone" placeholder="Phone">
+                            <input type="text" class="form-control bg-light border-0 rounded-3" id="phone" name="phone" placeholder="Phone" required>
                             <label for="phone" class="text-muted">Phone Number</label>
                         </div>
 
@@ -24,22 +25,28 @@
                         <div class="row g-3">
                             <div class="col-12">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control bg-light border-0 rounded-3" id="address" placeholder="Address">
+                                    <input type="text" class="form-control bg-light border-0 rounded-3" id="address" name="address" placeholder="Address" required>
                                     <label for="address" class="text-muted">Full Address</label>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control bg-light border-0 rounded-3" id="city" placeholder="City">
+                                    <input type="text" class="form-control bg-light border-0 rounded-3" id="city" name="city" placeholder="City" required>
                                     <label for="city" class="text-muted">City</label>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control bg-light border-0 rounded-3" id="postal_code" placeholder="Postal Code">
+                                    <input type="text" class="form-control bg-light border-0 rounded-3" id="postal_code" name="postal_code" placeholder="Postal Code" required>
                                     <label for="postal_code" class="text-muted">Postal Code</label>
                                 </div>
                             </div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-dark w-100 py-3 rounded-pill fw-bold d-flex align-items-center justify-content-center gap-2 transition-transform hover-scale">
+                                Pay Order <i class="bi bi-arrow-right"></i>
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -91,9 +98,7 @@
                             <span class="fw-bold fs-4">Rp {{ number_format($total, 0, ',', '.') }}</span>
                         </div>
 
-                        <button class="btn btn-dark w-100 py-3 rounded-pill fw-bold d-flex align-items-center justify-content-center gap-2 transition-transform hover-scale">
-                            Pay Order <i class="bi bi-arrow-right"></i>
-                        </button>
+
                     </div>
                 </div>
             </div>
