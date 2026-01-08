@@ -20,7 +20,7 @@
             min-height: 400px;
             background-size: cover;
             background-position: center;
-            border-radius: 20px;
+            border-radius: 8px;
             position: relative;
             overflow: hidden;
             margin-bottom: 3rem;
@@ -44,7 +44,7 @@
             padding: 1.5rem 1rem;
             background: white;
             border: 1px solid #f0f0f0;
-            border-radius: 16px;
+            border-radius: 12px;
             text-decoration: none;
             color: #1a1a1a;
             transition: all 0.2s ease;
@@ -87,7 +87,7 @@
             height: 100%;
         }
         .product-img-wrapper {
-            border-radius: 12px;
+            border-radius: 4px;
             overflow: hidden;
             background: #f4f4f4;
             aspect-ratio: 1/1;
@@ -121,7 +121,7 @@
         <!-- Hero -->
         <div class="hero-section mb-5" style="background-image: url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=2070&auto=format&fit=crop');">
             <div class="hero-content">
-                <span class="badge bg-white text-dark mb-2 px-3 py-1 rounded-pill fw-bold small">New Arrival</span>
+                <span class="badge bg-white text-dark mb-2 px-3 py-1 rounded-fill fw-bold small">New Arrival</span>
                 <h1 class="display-4 fw-bold mb-2">Minimalist Collection</h1>
                 <p class="mb-0 opacity-75">Discover styles that blend luxury and comfort perfectly.</p>
             </div>

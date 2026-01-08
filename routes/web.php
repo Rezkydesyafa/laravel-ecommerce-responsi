@@ -4,7 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ShopController;
 use Illuminate\Support\Facades\Route;
 
-// Home / Shop routes (Customer)
+// Home routes (Customer)
 Route::get('/', [ShopController::class, 'index'])->name('shop.index');
 Route::get('/product/{product}', [ShopController::class, 'show'])->name('shop.show');
 
@@ -25,9 +25,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/checkout', [App\Http\Controllers\CheckoutController::class, 'process'])->name('checkout.process');
     Route::post('/checkout/success', [App\Http\Controllers\CheckoutController::class, 'success'])->name('checkout.success');
     Route::get('/payment/{transaction}', [App\Http\Controllers\CheckoutController::class, 'payment'])->name('checkout.payment');
+
+    // Transaction History
+    Route::get('/history', [App\Http\Controllers\TransactionController::class, 'history'])->name('transaction.history');
 });
 
 Route::post('/midtrans/callback', [App\Http\Controllers\CheckoutController::class, 'callback'])->name('midtrans.callback');
 
 require __DIR__.'/auth.php';    
-

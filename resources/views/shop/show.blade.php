@@ -14,13 +14,13 @@
             font-family: system-ui, -apple-system, sans-serif;
             font-weight: 700;
             letter-spacing: -0.5px;
-            color: #1a1a1a;
+            color: #000;
         }
 
         .product-price {
             font-size: 1.75rem;
             font-weight: 500;
-            color: #1a1a1a;
+            color: #000;
         }
 
         .category-label {
@@ -87,7 +87,7 @@
         }
 
         .btn-black {
-            background-color: #1a1a1a;
+            background-color: #000;
             color: white;
             border: none;
             height: 50px;
@@ -191,11 +191,11 @@
 
                         <div class="d-grid gap-2">
                             @if($product->stok > 0)
-                                <button type="submit" class="btn btn-black rounded-pill w-100">
+                                <button type="submit" class="btn btn-black rounded-0 w-100">
                                     ADD TO CART
                                 </button>
                             @else
-                                <button type="button" class="btn btn-secondary rounded-pill w-100" disabled>
+                                <button type="button" class="btn btn-secondary rounded-0 w-100" disabled>
                                     OUT OF STOCK
                                 </button>
                             @endif
