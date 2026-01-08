@@ -4,7 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ShopController;
 use Illuminate\Support\Facades\Route;
 
-// Home / Shop routes (Customer)
+// Home routes (Customer)
 Route::get('/', [ShopController::class, 'index'])->name('shop.index');
 Route::get('/product/{product}', [ShopController::class, 'show'])->name('shop.show');
 

@@ -2,9 +2,8 @@
 
 namespace App\Filament\Resources\Categories\Schemas;
 
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Textarea;
 use Filament\Schemas\Schema;
+use Filament\Forms\Components\TextInput;
 
 class CategoryForm
 {
@@ -13,9 +12,9 @@ class CategoryForm
         return $schema
             ->components([
                 TextInput::make('name')
-                    ->required(),
-                Textarea::make('description') // Pastikan nama kolom benar. Migration categories pakai 'description' (Step 363)
-                    ->columnSpanFull(),
+                    ->label('Category Name')
+                    ->required()
+                    ->maxLength(255),
             ]);
     }
 }
