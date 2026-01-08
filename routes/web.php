@@ -25,9 +25,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/checkout', [App\Http\Controllers\CheckoutController::class, 'process'])->name('checkout.process');
     Route::post('/checkout/success', [App\Http\Controllers\CheckoutController::class, 'success'])->name('checkout.success');
     Route::get('/payment/{transaction}', [App\Http\Controllers\CheckoutController::class, 'payment'])->name('checkout.payment');
+
+    // Transaction History
+    Route::get('/history', [App\Http\Controllers\TransactionController::class, 'history'])->name('transaction.history');
 });
 
 Route::post('/midtrans/callback', [App\Http\Controllers\CheckoutController::class, 'callback'])->name('midtrans.callback');
 
 require __DIR__.'/auth.php';    
-

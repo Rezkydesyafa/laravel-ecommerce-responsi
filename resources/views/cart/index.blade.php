@@ -1,122 +1,158 @@
 <x-shop-layout>
     <style>
         .cart-img {
-            width: 80px;
-            height: 80px;
+            width: 100px;
+            height: 100px;
             object-fit: cover;
         }
         
-        /* Hilangkan spinner input number */
-        .no-arrow::-webkit-outer-spin-button,
-        .no-arrow::-webkit-inner-spin-button {
+        /* Minimalist Quantity Input */
+        .qty-btn {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #e5e7eb;
+            border-radius: 50%;
+            background: white;
+            transition: all 0.2s;
+            color: #333;
+        }
+        .qty-btn:hover {
+            background: #f3f4f6;
+            border-color: #d1d5db;
+        }
+        .qty-input {
+            width: 40px;
+            text-align: center;
+            border: none;
+            background: transparent;
+            font-weight: 500;
+            appearance: none;
+            -moz-appearance: textfield;
+        }
+        .qty-input::-webkit-outer-spin-button,
+        .qty-input::-webkit-inner-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
-        .no-arrow {
-            -moz-appearance: textfield;
-        }
 
-        .hover-scale { transition: transform 0.2s; }
-        .hover-scale:hover { transform: scale(1.05); }
+        .hover-scale-img { transition: transform 0.3s ease; }
+        .hover-scale-img:hover { transform: scale(1.03); }
+        
+        .btn-black {
+            background-color: #000;
+            color: white;
+            transition: all 0.3s;
+        }
+        .btn-black:hover {
+            background-color: #333;
+            color: white;
+            transform: translateY(-1px);
+        }
+        
+        .ls-1 { letter-spacing: 0.05em; }
     </style>
 
-    <div class="py-5 bg-light min-vh-100">
+    <div class="py-5 bg-white min-vh-100">
         <div class="container" style="max-width: 1100px;">
+            <!-- Header -->
+            <div class="d-flex align-items-center justify-content-between mb-5">
+                <h1 class="h3 fw-bold mb-0 text-uppercase ls-1" style="font-family: 'Instrument Sans', sans-serif;">Shopping Bag</h1>
+                <span class="text-muted small">{{ $items->count() }} items</span>
+            </div>
+
             <div class="row g-5">
                 <!-- Left Column: Cart Items -->
                 <div class="col-lg-8">
-                    <div class="d-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 fw-bold mb-0">Shopping Cart</h1>
-                        <span class="badge bg-dark rounded-pill fw-normal px-3 py-2">{{ $items->count() }} Items</span>
-                    </div>
-
-
-
                     @if($items->count() > 0)
-                        <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
-                            <div class="card-body p-0">
-                                @php $total = 0; @endphp
-                                @foreach($items as $item)
-                                    @php 
-                                        $subtotal = $item->product->harga * $item->quantity;
-                                        $total += $subtotal; 
-                                    @endphp
-                                    <div class="p-4 border-bottom last:border-bottom-0 cf-row" data-item-id="{{ $item->id }}">
-                                        <div class="d-flex align-items-center gap-4">
-                                            <!-- Image -->
-                                            <div class="flex-shrink-0 bg-light rounded-3 overflow-hidden" style="width: 100px; height: 100px;">
-                                                @if($item->product->image)
-                                                    <a href="{{ route('shop.show', $item->product) }}">
-                                                        <img src="{{ Storage::url($item->product->image) }}" class="w-100 h-100 object-fit-cover hover-scale" alt="{{ $item->product->nama }}">
-                                                    </a>
-                                                @else
-                                                    <div class="w-100 h-100 d-flex align-items-center justify-content-center text-muted">
-                                                        <i class="bi bi-image fs-4"></i>
-                                                    </div>
-                                                @endif
+                        <div class="d-flex flex-column gap-4">
+                            @php $total = 0; @endphp
+                            @foreach($items as $item)
+                                @php 
+                                    $subtotal = $item->product->harga * $item->quantity;
+                                    $total += $subtotal; 
+                                @endphp
+                                
+                                <div class="row align-items-center cf-row py-3 border-bottom" data-item-id="{{ $item->id }}">
+                                    <!-- Image -->
+                                    <div class="col-3 col-md-2">
+                                        <div class="bg-light rounded-0 overflow-hidden position-relative" style="aspect-ratio: 1; min-height: 80px;">
+                                            @if($item->product->image)
+                                                <a href="{{ route('shop.show', $item->product) }}">
+                                                    <img src="{{ Storage::url($item->product->image) }}" class="w-100 h-100 object-fit-cover hover-scale-img" alt="{{ $item->product->nama }}">
+                                                </a>
+                                            @else
+                                                <div class="w-100 h-100 d-flex align-items-center justify-content-center text-muted bg-secondary-subtle">
+                                                    <i class="bi bi-image fs-5"></i>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    <!-- Details -->
+                                    <div class="col-9 col-md-10">
+                                        <div class="row align-items-center h-100">
+                                            <div class="col-md-5 mb-2 mb-md-0">
+                                                <small class="text-secondary text-uppercase fw-bold" style="font-size: 0.7rem; letter-spacing: 0.5px;">{{ $item->product->category->name ?? 'Product' }}</small>
+                                                <a href="{{ route('shop.show', $item->product) }}" class="d-block text-black text-decoration-none h6 fw-bold mb-1 text-truncate">{{ $item->product->nama }}</a>
+                                                <div class="text-muted small">Rp {{ number_format($item->product->harga, 0, ',', '.') }}</div>
+                                            </div>
+                                            
+                                            <div class="col-6 col-md-3">
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <button class="qty-btn" onclick="changeQty(this, -1)">
+                                                        <i class="bi bi-dash"></i>
+                                                    </button>
+                                                    <input type="number" 
+                                                           class="qty-input" 
+                                                           value="{{ $item->quantity }}" 
+                                                           min="1" 
+                                                           data-id="{{ $item->id }}"
+                                                           data-price="{{ $item->product->harga }}"
+                                                           readonly>
+                                                    <button class="qty-btn" onclick="changeQty(this, 1)">
+                                                        <i class="bi bi-plus"></i>
+                                                    </button>
+                                                </div>
                                             </div>
 
-                                            <!-- Details -->
-                                            <div class="flex-grow-1">
-                                                <div class="row align-items-center">
-                                                    <div class="col-md-5 mb-2 mb-md-0">
-                                                        <small class="text-uppercase text-muted fw-bold" style="font-size: 0.7rem;">{{ $item->product->category->name ?? 'Product' }}</small>
-                                                        <a href="{{ route('shop.show', $item->product) }}" class="d-block text-dark text-decoration-none h6 fw-bold mb-0 text-truncate">{{ $item->product->nama }}</a>
-                                                        <div class="text-muted small mt-1">Rp {{ number_format($item->product->harga, 0, ',', '.') }}</div>
-                                                    </div>
-                                                    
-                                                    <div class="col-md-3 mb-3 mb-md-0">
-                                                        <div class="d-flex align-items-center border rounded-pill px-2" style="width: fit-content;">
-                                                            <button class="btn btn-link text-dark p-0 text-decoration-none" onclick="changeQty(this, -1)">
-                                                                <i class="bi bi-dash"></i>
-                                                            </button>
-                                                            <input type="number" 
-                                                                   class="form-control border-0 bg-transparent text-center fw-bold p-1 no-arrow quantity-input" 
-                                                                   style="width: 40px;"
-                                                                   value="{{ $item->quantity }}" 
-                                                                   min="1" 
-                                                                   data-id="{{ $item->id }}"
-                                                                   data-price="{{ $item->product->harga }}"
-                                                                   readonly>
-                                                            <button class="btn btn-link text-dark p-0 text-decoration-none" onclick="changeQty(this, 1)">
-                                                                <i class="bi bi-plus"></i>
-                                                            </button>
-                                                        </div>
-                                                    </div>
+                                            <div class="col-5 col-md-3 text-end">
+                                                <div class="fw-bold text-black subtotal-display">Rp {{ number_format($subtotal, 0, ',', '.') }}</div>
+                                            </div>
 
-                                                    <div class="col-md-3 mb-2 mb-md-0 text-md-end">
-                                                        <div class="fw-bold fs-6 subtotal-display">Rp {{ number_format($subtotal, 0, ',', '.') }}</div>
-                                                    </div>
-
-                                                    <div class="col-md-1 text-end">
-                                                        <form action="{{ route('cart.destroy', $item->id) }}" method="POST">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="btn btn-link text-muted p-0" title="Remove" onclick="return confirm('Remove item?')">
-                                                                <i class="bi bi-x-lg"></i>
-                                                            </button>
-                                                        </form>
-                                                    </div>
-                                                </div>
+                                            <div class="col-1 text-end">
+                                                <form action="{{ route('cart.destroy', $item->id) }}" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-link text-muted p-0 hover-text-danger" onclick="return confirm('Remove item?')">
+                                                        <i class="bi bi-x"></i>
+                                                    </button>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
-                                @endforeach
-                            </div>
+                                </div>
+                            @endforeach
                         </div>
                         
-                        <div class="mt-4">
-                            <a href="{{ route('shop.index') }}" class="text-decoration-none text-muted fw-medium small">
-                                <i class="bi bi-arrow-left me-1"></i> Continue Shopping
+                        <div class="mt-5">
+                            <a href="{{ route('shop.index') }}" class="text-decoration-none text-black fw-medium small d-inline-flex align-items-center hover-opacity">
+                                <i class="bi bi-arrow-left me-2"></i> Continue Shopping
                             </a>
                         </div>
 
                     @else
-                        <div class="text-center py-5 bg-white rounded-4 shadow-sm">
-                            <i class="bi bi-cart3 fs-1 text-muted opacity-50 mb-3 d-block"></i>
-                            <h4 class="h5 fw-bold">Your cart is empty</h4>
-                            <p class="text-muted mb-4 small">Discover our collections and find something you love.</p>
-                            <a href="{{ route('shop.index') }}" class="btn btn-dark rounded-pill px-4">Start Shopping</a>
+                        <div class="text-center py-5">
+                            <div class="mb-4 text-muted opacity-25">
+                                <i class="bi bi-bag fs-1" style="font-size: 4rem !important;"></i>
+                            </div>
+                            <h4 class="h5 fw-bold mb-2">Your Bag is Empty</h4>
+                            <p class="text-muted mb-4 small">Looks like you haven't added anything to your bag yet.</p>
+                            <a href="{{ route('shop.index') }}" class="btn btn-black rounded-pill px-5 py-2 fw-medium text-uppercase ls-1" style="font-size: 0.8rem;">
+                                Start Shopping
+                            </a>
                         </div>
                     @endif
                 </div>
@@ -124,35 +160,35 @@
                 <!-- Right Column: Summary -->
                 @if($items->count() > 0)
                 <div class="col-lg-4">
-                    <div class="card border-0 shadow-sm rounded-4 position-sticky" style="top: 100px;">
-                        <div class="card-body p-4">
-                            <h5 class="fw-bold mb-4">Order Summary</h5>
-                            
-                            <div class="d-flex justify-content-between mb-3 text-muted">
-                                <span>Subtotal</span>
-                                <span id="summary-subtotal">Rp {{ number_format($total, 0, ',', '.') }}</span>
-                            </div>
-                            <div class="d-flex justify-content-between mb-3 text-muted">
-                                <span>Shipping</span>
-                                <span class="text-success fw-medium">Free</span>
-                            </div>
-                            <div class="d-flex justify-content-between mb-4 text-muted">
-                                <span>Tax</span>
-                                <span>Included</span>
-                            </div>
-                            
-                            <hr class="border-secondary opacity-10 my-4">
-                            
-                            <div class="d-flex justify-content-between mb-4">
-                                <span class="fw-bold fs-5">Total</span>
-                                <span class="fw-bold fs-5" id="summary-total">Rp {{ number_format($total, 0, ',', '.') }}</span>
-                            </div>
+                    <div class="bg-light bg-opacity-50 p-4 rounded-0 position-sticky" style="top: 100px;">
+                        <h5 class="fw-bold mb-4 ls-1 text-uppercase" style="font-size: 0.9rem;">Order Summary</h5>
+                        
+                        <div class="d-flex justify-content-between mb-3 text-secondary small">
+                            <span>Subtotal</span>
+                            <span id="summary-subtotal" class="text-black fw-medium">Rp {{ number_format($total, 0, ',', '.') }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3 text-secondary small">
+                            <span>Shipping</span>
+                            <span class="text-black fw-medium">Free</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-4 text-secondary small">
+                            <span>Tax</span>
+                            <span class="text-black fw-medium">Included</span>
+                        </div>
+                        
+                        <hr class="border-secondary opacity-25 my-4">
+                        
+                        <div class="d-flex justify-content-between mb-4 align-items-center">
+                            <span class="fw-bold text-uppercase small ls-1">Total</span>
+                            <span class="fw-bold fs-5" id="summary-total">Rp {{ number_format($total, 0, ',', '.') }}</span>
+                        </div>
 
-                            <a href="{{ route('checkout.index') }}" class="btn btn-dark w-100 py-3 rounded-3 fw-bold shadow-sm">
-                                Checkout Now
-                            </a>
+                        <a href="{{ route('checkout.index') }}" class="btn btn-black w-100 py-3 rounded-0 fw-bold text-uppercase ls-1 shadow-none" style="font-size: 0.85rem;">
+                            Proceed to Checkout
+                        </a>
 
-                            <p class="text-center text-muted small mt-3 mb-0">
+                        <div class="mt-4 text-center">
+                            <p class="text-muted small" style="font-size: 0.7rem;">
                                 <i class="bi bi-shield-lock me-1"></i> Secure Checkout
                             </p>
                         </div>
@@ -190,7 +226,7 @@
             input.closest('.cf-row').querySelector('.subtotal-display').textContent = formatter.format(subtotal).replace('Rp', 'Rp ');
 
             let total = 0;
-            document.querySelectorAll('.quantity-input').forEach(inp => {
+            document.querySelectorAll('.qty-input').forEach(inp => {
                total += parseInt(inp.value) * parseFloat(inp.dataset.price);
             });
             
@@ -209,9 +245,6 @@
                 body: JSON.stringify({ quantity: quantity })
             })
             .then(res => res.json())
-            .then(data => {
-                // Silent update success
-            })
             .catch(error => console.error('Error:', error));
         }
     </script>
