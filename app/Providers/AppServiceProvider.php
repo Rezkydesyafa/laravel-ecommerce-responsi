@@ -24,8 +24,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Tambahkan kode ini:
-        if (app()->environment('production') || app()->environment('local')) {
+        // Tambahkan logika ini:
+        if($this->app->environment('production')) {
             URL::forceScheme('https');
         }
     }
