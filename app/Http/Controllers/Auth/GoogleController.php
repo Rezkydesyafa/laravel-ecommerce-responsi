@@ -61,8 +61,9 @@ class GoogleController extends Controller
                 }
             }
 
-            // Google login selalu diarahkan ke home
-            return redirect()->intended('/');
+            // Clear intended URL and always redirect to home
+            session()->forget('url.intended');
+            return redirect('/');
 
         } catch (\Exception $e) {
             return redirect()->route('login')->with('error', 'Gagal login dengan Google, silakan coba lagi.');
